@@ -1,0 +1,84 @@
+<c-row>
+  <c-col lg="8">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>{{ title }}</strong>
+      </c-card-header>
+      <c-card-body>
+        @if (loading && isEdit) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        } @else {
+          <form [formGroup]="form" (ngSubmit)="save()">
+            <c-row class="mb-3">
+              <c-col md="6">
+                <label cFormLabel>Nombre *</label>
+                <input cFormControl formControlName="nombre" placeholder="Nombre" />
+                @if (form.get('nombre')?.touched && form.get('nombre')?.invalid) {
+                  <div class="text-danger small mt-1">El nombre es obligatorio</div>
+                }
+              </c-col>
+              <c-col md="6">
+                <label cFormLabel>Apellido *</label>
+                <input cFormControl formControlName="apellido" placeholder="Apellido" />
+                @if (form.get('apellido')?.touched && form.get('apellido')?.invalid) {
+                  <div class="text-danger small mt-1">El apellido es obligatorio</div>
+                }
+              </c-col>
+            </c-row>
+
+            <c-row class="mb-3">
+              <c-col md="6">
+                <label cFormLabel>Teléfono *</label>
+                <input cFormControl formControlName="telefono" placeholder="Teléfono" />
+                @if (form.get('telefono')?.touched && form.get('telefono')?.invalid) {
+                  <div class="text-danger small mt-1">El teléfono es obligatorio</div>
+                }
+              </c-col>
+              <c-col md="6">
+                <label cFormLabel>Email</label>
+                <input cFormControl formControlName="email" placeholder="Email" type="email" />
+              </c-col>
+            </c-row>
+
+            <c-row class="mb-3">
+              <c-col md="6">
+                <label cFormLabel>Tipo</label>
+                <select cFormSelect formControlName="role_id">
+                  <option [value]="2">Cliente</option>
+                  <option [value]="3">Prospecto</option>
+                </select>
+              </c-col>
+            </c-row>
+
+            <c-row class="mb-3">
+              <c-col md="12">
+                <label cFormLabel>Dirección</label>
+                <input cFormControl formControlName="direccion" placeholder="Dirección" />
+              </c-col>
+            </c-row>
+
+            <c-row class="mb-3">
+              <c-col md="12">
+                <label cFormLabel>Notas</label>
+                <textarea cFormControl formControlName="notas" placeholder="Notas adicionales" rows="3"></textarea>
+              </c-col>
+            </c-row>
+
+            <div class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="loading">
+                {{ isEdit ? 'Actualizar' : 'Guardar' }}
+              </button>
+              <button cButton color="secondary" type="button" (click)="cancel()">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

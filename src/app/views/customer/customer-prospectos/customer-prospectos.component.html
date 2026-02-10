@@ -1,0 +1,72 @@
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Prospectos</strong>
+      </c-card-header>
+      <c-card-body>
+        <c-row class="mb-3">
+          <c-col md="6">
+            <c-input-group>
+              <span cInputGroupText>
+                <svg cIcon name="cilSearch"></svg>
+              </span>
+              <input cFormControl placeholder="Buscar por nombre, apellido o teléfono..." [(ngModel)]="searchTerm" (input)="search()" />
+            </c-input-group>
+          </c-col>
+          <c-col md="6" class="text-end">
+            <button cButton color="primary" routerLink="/clientes/nuevo">
+              <svg cIcon name="cilPlus" class="me-2"></svg>
+              Nuevo Prospecto
+            </button>
+          </c-col>
+        </c-row>
+
+        @if (loading) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        } @else {
+          <table cTable striped hover>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (prospecto of filteredProspectos; track prospecto.id) {
+                <tr>
+                  <td>{{ prospecto.nombre }}</td>
+                  <td>{{ prospecto.apellido }}</td>
+                  <td>{{ prospecto.telefono }}</td>
+                  <td>{{ prospecto.email || '-' }}</td>
+                  <td>
+                    <button cButton color="success" size="sm" class="me-1" (click)="convertToClient(prospecto.id!)" title="Convertir a cliente">
+                      <svg cIcon name="cilUserFollow"></svg>
+                    </button>
+                    <button cButton color="info" size="sm" class="me-1" [routerLink]="['/clientes/editar', prospecto.id]">
+                      <svg cIcon name="cilPencil"></svg>
+                    </button>
+                    <button cButton color="danger" size="sm" (click)="deleteProspecto(prospecto.id!)">
+                      <svg cIcon name="cilTrash"></svg>
+                    </button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center">No hay prospectos registrados</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
