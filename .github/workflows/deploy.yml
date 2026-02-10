@@ -1,0 +1,62 @@
+name: Build & Deploy Angular a Hostinger
+
+on:
+  push:
+    branches: [main]
+
+env:
+  NODE: 24
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codigo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE }}
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build Angular
+        run: npx ng build --base-href /admin/
+
+      - name: Deploy build a Hostinger via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 147.93.38.64
+          port: 65002
+          username: u691277401
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            LARAVEL_PUBLIC=/home/u691277401/domains/alianzasagroindustriales.com/Mis_Sitios_WEB_Salon_Belleza/Mis_Sitios_WEB_Salon_Belleza/public
+            ANGULAR_DIR=$LARAVEL_PUBLIC/admin
+            mkdir -p $ANGULAR_DIR
+            echo "Directorio admin listo"
+
+      - name: Copiar build al servidor
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 147.93.38.64
+          port: 65002
+          username: u691277401
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "dist/coreui-free-angular-admin-template/browser/*"
+          target: "/home/u691277401/domains/alianzasagroindustriales.com/Mis_Sitios_WEB_Salon_Belleza/Mis_Sitios_WEB_Salon_Belleza/public/admin"
+          strip_components: 3
+
+      - name: Verificar deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 147.93.38.64
+          port: 65002
+          username: u691277401
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            ANGULAR_DIR=/home/u691277401/domains/alianzasagroindustriales.com/Mis_Sitios_WEB_Salon_Belleza/Mis_Sitios_WEB_Salon_Belleza/public/admin
+            ls -la $ANGULAR_DIR
+            echo "Deploy Angular completado!"
