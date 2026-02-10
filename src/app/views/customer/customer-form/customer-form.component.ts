@@ -11,8 +11,7 @@ import {
   FormControlDirective,
   FormLabelDirective,
   FormSelectDirective,
-  RowComponent,
-  TextareaDirective
+  RowComponent
 } from '@coreui/angular';
 import { CustomerService } from '../services/customer.service';
 
@@ -30,8 +29,7 @@ import { CustomerService } from '../services/customer.service';
     FormControlDirective,
     FormLabelDirective,
     FormSelectDirective,
-    ButtonDirective,
-    TextareaDirective
+    ButtonDirective
   ]
 })
 export class CustomerFormComponent implements OnInit {

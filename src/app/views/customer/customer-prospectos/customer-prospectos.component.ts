@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  BadgeComponent,
   ButtonDirective,
   CardBodyComponent,
   CardComponent,
@@ -33,7 +32,6 @@ import { Customer } from '../models/customer.model';
     ColComponent,
     TableDirective,
     ButtonDirective,
-    BadgeComponent,
     InputGroupComponent,
     InputGroupTextDirective,
     FormControlDirective,
