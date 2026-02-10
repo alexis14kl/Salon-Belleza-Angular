@@ -45,11 +45,37 @@ export class DefaultHeaderComponent extends HeaderComponent {
     return this.colorModes.find(mode => mode.name === currentMode)?.icon ?? 'cilSun';
   });
 
+  readonly userName: string;
+
   constructor() {
     super();
+    const user = localStorage.getItem('auth_user');
+    this.userName = user ? JSON.parse(user).name : 'Usuario';
   }
 
   sidebarId = input('sidebar1');
+
+  logout(): void {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).finally(() => {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
+        window.location.href = '/';
+      });
+    } else {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      window.location.href = '/';
+    }
+  }
 
   public newMessages = [
     {
